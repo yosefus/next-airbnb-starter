@@ -1,7 +1,7 @@
-import { unstable_noStore } from 'next/cache'
+import { getAllHotels } from '@/BL/hotel.service'
+import { connectToMongo } from '@/DL/connectToMongo'
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
 
 export default async function Home() {
   // to ssr
@@ -9,20 +9,23 @@ export default async function Home() {
 
 
   // to ssr - no - store
-  const hotels = await fetch('http://localhost:3003/api/listings')
-    .then(res => res.json())
+  // const hotels = await fetch('http://localhost:3003/api/listings', { cache: 'no-store' })
+  //   .then(res => res.json())
+
+  // const all = await HotelsModel.insertMany(hotels)
+  // console.log({ all });
+
+  await connectToMongo()
+  const hotels = await getAllHotels()
 
   return (
     <div>
-      {/* all hotels */}
-      {/* <h1 className='text-6xl'>{joke.value}</h1> */}
-
       <ul>
-        {hotels.map(hotel => <li key={hotel.id}>
-          <Link href={`/${hotel.id}`} >
-            <img width={500} height={400} src={hotel.images[0]} alt={hotel.title} />
-          {hotel.title}
-        </Link></li>)}
+        {hotels.map(hotel => <li key={hotel._id}>
+          <Link href={`/${hotel._id}`} >
+            <Image width={500} height={400} src={hotel.images[0]} alt={hotel.title} />
+            {hotel.title}
+          </Link></li>)}
       </ul>
     </div>
   )
