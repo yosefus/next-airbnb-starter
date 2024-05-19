@@ -1,5 +1,5 @@
-import { getAllHotels } from '@/BL/hotel.service'
-import { connectToMongo } from '@/DL/connectToMongo'
+import { getAllHotels } from '@/server/BL/hotel.service'
+import { connectToMongo } from '@/server/DL/connectToMongo'
 import Image from 'next/image'
 import Link from 'next/link'
 
